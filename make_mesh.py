@@ -2,12 +2,13 @@ import fiona
 import numpy as np
 import gmsh
 
-shp = fiona.open("frenchjoe.gpkg", mode="r")
-coords = np.array(list(shp.values())[1]["geometry"]["coordinates"]).squeeze()
+shp = fiona.open("./domain_shp/teton_boundary1.gpkg", mode="r")
+
+coords = np.array(list(shp.values())[0]["geometry"]["coordinates"]).squeeze()
 shp.close()
 
 # Resolution
-lc = 200
+lc = 350
 
 # Trim last point (is identical to first)
 coords = coords[:-1, :]
@@ -20,7 +21,6 @@ points = []
 
 for x, y in coords:
     points.append(gmsh.model.geo.addPoint(x, y, 0, lc))
-
 
 lines = []
 for i in range(len(points)):
